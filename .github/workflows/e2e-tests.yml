@@ -1,8 +1,7 @@
-
 name: E2E Tests
 
 on:
-  workflow_dispatch: # Lo lanzamos manual para probar
+  workflow_dispatch:
   push:
     branches: [ main ]
 
@@ -10,12 +9,19 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout del código
         uses: actions/checkout@v4
 
-      - name: Ejecutar tests E2E
+      # Paso nuevo: Instalamos las dependencias manualmente
+      - name: Instalar dependencias de E2E
+        run: npm install
+        working-directory: ./hangman-e2e
+
+      # Ejecutamos Cypress pero le decimos que NO intente instalar nada (install: false)
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          # Aquí indicamos que trabaje sobre tu carpeta de e2e
           working-directory: ./hangman-e2e
-          # Si necesitas levantar el front/api antes, aquí se configuraría el "start"
+          install: false 
+          # Nota: Si tus tests necesitan que la web esté encendida, 
+          # aquí faltaría el comando para levantar el front.
