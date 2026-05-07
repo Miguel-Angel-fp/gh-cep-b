@@ -5,13 +5,6 @@ on:
   push:
     branches: [ main ]
 
-name: E2E Tests
-
-on:
-  workflow_dispatch:
-  push:
-    branches: [ main ]
-
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -20,11 +13,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Instalar dependencias
-        # Fíjate en la ruta: hangman-e2e/e2e
+        # Ruta corregida según tu estructura: hangman-e2e/e2e
         run: npm install
         working-directory: ./hangman-e2e/e2e
 
       - name: Ejecutar Cypress (Headless Mode)
-        # Aquí también usamos la ruta con subcarpeta
         run: npx cypress run
         working-directory: ./hangman-e2e/e2e
