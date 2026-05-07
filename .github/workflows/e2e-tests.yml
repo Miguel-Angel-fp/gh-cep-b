@@ -12,16 +12,12 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # Paso nuevo: Instalamos las dependencias manualmente
-      - name: Instalar dependencias de E2E
+      - name: Instalar dependencias
+        # Usamos --no-package-lock para que no se queje si no lo encuentra
         run: npm install
         working-directory: ./hangman-e2e
 
-      # Ejecutamos Cypress pero le decimos que NO intente instalar nada (install: false)
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: ./hangman-e2e
-          install: false 
-          # Nota: Si tus tests necesitan que la web esté encendida, 
-          # aquí faltaría el comando para levantar el front.
+      - name: Ejecutar Cypress (Headless Mode)
+        # npx cypress run es el comando para servidores (sin abrir ventana)
+        run: npx cypress run
+        working-directory: ./hangman-e2e
