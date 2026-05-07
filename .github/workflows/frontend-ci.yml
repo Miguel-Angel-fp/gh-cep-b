@@ -1,0 +1,34 @@
+name: Frontend CI
+
+on:
+  pull_request:
+    paths:
+      - 'hangman-front/**' # Solo si cambian cosas en esta carpeta
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          # Buscamos el lock file dentro de la carpeta del front
+          cache-dependency-path: 'hangman-front/package-lock.json'
+
+      - name: Instalar dependencias
+        run: npm install
+        working-directory: ./hangman-front
+
+      - name: Ejecutar Build
+        run: npm run build
+        working-directory: ./hangman-front
+
+      - name: Ejecutar Tests Unitarios
+        run: npm test
+        working-directory: ./hangman-front

@@ -1,0 +1,21 @@
+
+name: E2E Tests
+
+on:
+  workflow_dispatch: # Lo lanzamos manual para probar
+  push:
+    branches: [ main ]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ejecutar tests E2E
+        uses: cypress-io/github-action@v6
+        with:
+          # Aquí indicamos que trabaje sobre tu carpeta de e2e
+          working-directory: ./hangman-e2e
+          # Si necesitas levantar el front/api antes, aquí se configuraría el "start"
