@@ -12,17 +12,21 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # 1. Instalamos dependencias del frontend para que el comando "start" funcione
+      # 1. Instalamos TODO para que run-p y los scripts funcionen
       - name: Instalar dependencias del Front
         run: npm install
         working-directory: ./hangman-front
 
-      # 2. Ejecutamos Cypress usando la acción oficial que ya sabe manejar el inicio
+      - name: Instalar dependencias de E2E
+        run: npm install
+        working-directory: ./hangman-e2e/e2e
+
+      # 2. Ejecutar Cypress
       - name: Ejecutar Tests E2E
         uses: cypress-io/github-action@v6
         with:
           working-directory: ./hangman-e2e/e2e
-          # Este comando ahora sí funcionará porque hicimos npm install antes
-          start: npm start
+          # Aquí está el truco: le decimos que arranque el front que está afuera
+          start: npm start --prefix ../../hangman-front
           wait-on: 'http://localhost:8080'
-          wait-on-timeout: 120
+          wait-on-timeout: 150
